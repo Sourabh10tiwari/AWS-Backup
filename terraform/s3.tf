@@ -1,5 +1,5 @@
-resource "aws_s3_bucket" "backup_bucket" {
-  bucket = "Backup_Of_Instances_34785"
+resource "aws_s3_bucket" "versioned_bucket" {
+  bucket = "versioned-bucket-34785"
   force_destroy = true
 
   versioning {
@@ -7,6 +7,6 @@ resource "aws_s3_bucket" "backup_bucket" {
   }
 
   tags = {
-    Name = "Backup_Of_Instances"
+    Name = "versioned-bucket"
   }
 }
