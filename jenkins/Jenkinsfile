@@ -34,7 +34,9 @@ pipeline {
             steps {
                 dir('terraform'){
                     input message: "Approve Apply?", ok: "Apply"
-                    sh 'terraform apply -auto-approve tfplan'
+                    script{
+			sh 'terraform apply -auto-approve tfplan'
+		    }
                 }
             }
         }
