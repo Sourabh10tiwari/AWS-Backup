@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_DEFAULT_REGION = 'us-east-1'
+        TF_VAR_instance_count = '1' // Optional, override variables
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/yourusername/your-terraform-repo.git'
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                sh 'terraform init'
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                sh 'terraform plan -out=tfplan'
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                input message: "Approve Apply?", ok: "Apply"
+                sh 'terraform apply -auto-approve tfplan'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Terraform Apply completed successfully.'
+        }
+        failure {
+            echo 'Terraform Apply failed.'
+        }
+    }
