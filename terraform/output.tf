@@ -3,6 +3,6 @@ output "backup_vault_name" {
 }
 
 output "s3_bucket_name" {
-  value = aws_s3_bucket.backup_bucket.bucket
+  value = aws_s3_bucket.versioned_bucket.bucket
 }
 
