@@ -30,6 +30,14 @@ pipeline {
             }
         }
 
+	stage('Manual Approval') {
+    		steps {
+        		script {
+            			input message: "Approve Terraform Apply?", ok: "Yes"
+        		}
+    		}
+	}
+
         stage('Terraform Apply') {
             steps {
                 dir('terraform'){
