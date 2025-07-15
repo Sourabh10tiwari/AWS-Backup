@@ -8,22 +8,10 @@ resource "aws_backup_plan" "daily" {
   rule {
     rule_name         = "daily-backup"
     target_vault_name = aws_backup_vault.default.name
-    schedule          = "cron(10 * * * ? *)"
+    schedule          = "cron(* 5 * * ? *)"
     lifecycle {
       delete_after = 30
     }
-  }
-}
-
-resource "aws_backup_selection" "tag_selection" {
-  iam_role_arn = aws_iam_role.backup_role.arn
-  name         = "tag-based-selection"
-  plan_id      = aws_backup_plan.daily.id
-
-  selection_tag {
-    type  = "STRINGEQUALS"
-    key   = "Backup"
-    value = "Daily"
   }
 }
 
@@ -50,3 +38,14 @@ resource "aws_iam_role_policy_attachment" "backup" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForBackup"
 }
 
+resource "aws_backup_selection" "tag_selection" {
+  iam_role_arn = aws_iam_role.backup_role.arn
+  name         = "tag-based-selection"
+  plan_id      = aws_backup_plan.daily.id
+
+  selection_tag {
+    type  = "STRINGEQUALS"
+    key   = "Backup"
+    value = "Daily"
+  }
+}
